@@ -3,14 +3,18 @@ import '../models/car_model.dart';
 
 class CarRepository {
   List<Car> getCars() {
-    return DUMMY_DATA;
+    return dummyData;
   }
 
   void addCar(Car car) {
-    DUMMY_DATA.add(car);
+    dummyData.add(car);
   }
 
   void editCar(Car car, int index) {
-    DUMMY_DATA.replaceRange(index, index + 1, [car]);
+    dummyData.replaceRange(index, index + 1, [car]);
+  }
+
+  void removeCar(int id) {
+    dummyData.removeWhere((element) => element.id == id);
   }
 }

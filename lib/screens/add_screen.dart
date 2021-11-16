@@ -1,10 +1,9 @@
 import 'package:cars/data/models/car_model.dart';
-import 'package:cars/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import '../data/repository/car_helper.dart';
 
 class AddCarScreen extends StatefulWidget {
-  AddCarScreen({Key? key}) : super(key: key);
+  const AddCarScreen({Key? key}) : super(key: key);
 
   static const routeName = "/add-car-screen";
 
@@ -31,7 +30,11 @@ class _AddCarScreenState extends State<AddCarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Car"),
+        title: const Text(
+          "Add Car",
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 0),

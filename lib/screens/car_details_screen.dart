@@ -1,60 +1,83 @@
+import 'home_screen.dart';
 import 'package:flutter/material.dart';
 import '../data/models/car_model.dart';
+import '../constants/asset_image_paths.dart';
+import 'package:cars/widgets/car_details.dart';
+import 'package:cars/data/repository/car_helper.dart';
 
 class CarDetailsScreen extends StatelessWidget {
   const CarDetailsScreen({Key? key}) : super(key: key);
 
   static const routeName = '/car-details-screen';
 
-//   @override
-//   _CarDetailsScreenState createState() => _CarDetailsScreenState();
-// }
-
-// class _CarDetailsScreenState extends State<CarDetailsScreen> {
-
   @override
   Widget build(BuildContext context) {
     final Map parsedData = ModalRoute.of(context)!.settings.arguments as Map;
     final Car car = parsedData["car"];
-    final int index = parsedData["index"];
+
+    const SizedBox labelSpacer = SizedBox(
+      height: 20,
+    );
+    var mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Details"),
+        title: const Text(
+          "Details",
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {
-                // TODO
+                showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                            title: const Text("Are you sure?"),
+                            content:
+                                Text("${car.brand} ${car.model} - ${car.year}"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    CarRepository().removeCar(car.id);
+                                    Navigator.pop(context, true);
+                                  },
+                                  child: const Text("Yes")),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context); /* Close Dialog */
+                                  },
+                                  child: const Text("No"))
+                            ])).then((agreed) {
+                  if (agreed) {
+                    Navigator.pop(context);
+                  }
+                  /* Return to previous screen */
+                });
               })
         ],
       ),
-      body: Column(
-        children: [
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: mediaQuery.size.width * 0.1),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           FadeInImage(
               placeholder:
-                  const AssetImage('assets/images/car_placeholder.png'),
+                  const AssetImage(AssetImagePaths.carPlaceholderImage),
               image: NetworkImage(car.imageUrl)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Brand"), Text(car.brand)],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Model"), Text(car.model)],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Year"), Text(car.year.toString())],
-          ),
+          labelSpacer,
+          CarDetails(brand: car.brand, model: car.model, year: car.year),
+          labelSpacer,
           Container(
-              alignment: Alignment.center,
-              width: 400,
               height: 100,
-              decoration: BoxDecoration(color: Colors.red),
-              child: Text(car.description))
-        ],
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.cyan, border: Border.all(color: Colors.black)),
+              child: Text(
+                car.description,
+                style: const TextStyle(fontSize: 20),
+              ))
+        ]),
       ),
     );
   }

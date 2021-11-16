@@ -1,5 +1,4 @@
 import 'package:cars/data/models/car_model.dart';
-import 'package:cars/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import '../data/repository/car_helper.dart';
 
@@ -37,7 +36,11 @@ class _EditCarScreenState extends State<EditCarScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Car"),
+        title: const Text(
+          "Edit Car",
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 30, top: 0, right: 30, bottom: 0),
@@ -161,7 +164,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
                               year: int.parse(year.text),
                               description: description.text);
                           CarRepository().editCar(car, index);
-                          Navigator.pushNamed(context, HomeScreen.routeName);
+                          Navigator.pop(context);
                         }
                       },
                       child: const Text("Edit"),

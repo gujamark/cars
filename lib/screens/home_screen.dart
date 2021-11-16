@@ -6,7 +6,7 @@ import 'add_screen.dart';
 import 'car_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   static const routeName = "/home-screen";
   @override
@@ -46,11 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (ctx, index) {
                 return GestureDetector(
                   onLongPress: () => Navigator.pushNamed(
-                      context, EditCarScreen.routeName,
-                      arguments: {"car": cars[index], "index": index}),
+                          context, EditCarScreen.routeName,
+                          arguments: {"car": cars[index], "index": index})
+                      .then((value) => setState(() {})),
                   onTap: () => Navigator.pushNamed(
                       context, CarDetailsScreen.routeName,
-                      arguments: {"car": cars[index], "index": index}),
+                      arguments: {
+                        "car": cars[index],
+                      }).then((value) => setState(() {})),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 10),
